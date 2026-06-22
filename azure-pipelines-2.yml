@@ -43,8 +43,8 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: Publish Terraform Plan
       inputs:
-        targetPath: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments/dev'
-        artifact: 'terraform-plan'
+        targetPath: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments/dev/tfplan'
+        artifact: 'tfplan'
 
 
 - stage: Approval
@@ -87,8 +87,8 @@ stages:
     - task: DownloadPipelineArtifact@2
       displayName: Download Terraform Plan
       inputs:
-        artifact: 'terraform-plan'
-        path: '$(Pipeline.Workspace)/terraform-plan'
+        artifact: 'tfplan'
+        path: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments/dev'
 
     - task: TerraformTask@5
       displayName: Terraform Init
