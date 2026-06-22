@@ -39,6 +39,7 @@ jobs:
       environmentServiceNameAzureRM: 'ALZ-ServiceConnection'
 
 - job: ManualApproval
+  dependsOn: Terraform_Plan
   pool: server
 
   steps:
@@ -52,7 +53,7 @@ jobs:
 
 - job: Terraform_Apply
   displayName: Terraform Apply Job
-  dependsOn: Terraform_Plan
+  dependsOn: ManualApproval
 
   steps:
   - task: TerraformTask@5
