@@ -30,6 +30,18 @@ jobs:
   dependsOn: Terraform_Init
 
   steps:
+
+  - task: TerraformTask@5
+    displayName: Terraform Init
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments/dev'
+      backendServiceArm: 'ALZ-ServiceConnection'
+      backendAzureRmResourceGroupName: 'rg-surendra'
+      backendAzureRmStorageAccountName: 'stgsurendra'
+      backendAzureRmContainerName: 'containersurendra'
+      backendAzureRmKey: 'terraform.tfstate'
   - task: TerraformTask@5
     displayName: Terraform Plan
     inputs:
@@ -56,6 +68,18 @@ jobs:
   dependsOn: ManualApproval
 
   steps:
+
+  - task: TerraformTask@5
+    displayName: Terraform Init
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments/dev'
+      backendServiceArm: 'ALZ-ServiceConnection'
+      backendAzureRmResourceGroupName: 'rg-surendra'
+      backendAzureRmStorageAccountName: 'stgsurendra'
+      backendAzureRmContainerName: 'containersurendra'
+      backendAzureRmKey: 'terraform.tfstate'
   - task: TerraformTask@5
     displayName: Terraform Apply
     inputs:
