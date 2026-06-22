@@ -79,10 +79,10 @@ stages:
 
     steps:
 
-    # - task: TerraformInstaller@1
-    #   displayName: Terraform Install
-    #   inputs:
-    #     terraformVersion: 'latest'
+    - task: TerraformInstaller@1
+      displayName: Terraform Install
+      inputs:
+        terraformVersion: 'latest'
 
     - task: DownloadPipelineArtifact@2
       displayName: Download Terraform Plan
