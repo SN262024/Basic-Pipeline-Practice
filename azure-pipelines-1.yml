@@ -1,0 +1,64 @@
+trigger: none
+
+pool: ALZ1-AgentPool
+
+jobs:
+
+- job: Terraform_Init
+  displayName: Terraform Init Job
+
+  steps:
+  - task: TerraformInstaller@1
+    displayName: Terraform install
+    inputs:
+      terraformVersion: 'latest'
+
+  - task: TerraformTask@5
+    displayName: Terraform Init
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments/dev'
+      backendServiceArm: 'ALZ-ServiceConnection'
+      backendAzureRmResourceGroupName: 'rg-surendra'
+      backendAzureRmStorageAccountName: 'stgsurendra'
+      backendAzureRmContainerName: 'containersurendra'
+      backendAzureRmKey: 'terraform.tfstate'
+
+- job: Terraform_Plan
+  displayName: Terraform Plan Job
+  dependsOn: Terraform_Init
+
+  steps:
+  - task: TerraformTask@5
+    displayName: Terraform Plan
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments/dev'
+      environmentServiceNameAzureRM: 'ALZ-ServiceConnection'
+
+- job: ManualApproval
+  pool: server
+
+  steps:
+    - task: ManualValidation@0
+      timeoutInMinutes: 60
+      inputs:
+        notifyUsers: 'surendrachauhan18@gmail.com'
+        instructions: 'Please review Terraform Plan and approve deployment.'
+        onTimeout: 'resume'
+
+
+- job: Terraform_Apply
+  displayName: Terraform Apply Job
+  dependsOn: Terraform_Plan
+
+  steps:
+  - task: TerraformTask@5
+    displayName: Terraform Apply
+    inputs:
+      provider: 'azurerm'
+      command: 'apply'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments/dev'
+      environmentServiceNameAzureRM: 'ALZ-ServiceConnection'
