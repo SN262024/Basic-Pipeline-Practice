@@ -1,0 +1,40 @@
+trigger: none
+pool: ALZ1-AgentPool
+
+steps:
+- task: TerraformInstaller@1
+  displayName: Terraform Install
+  inputs:
+    terraformVersion: 'latest'
+
+- task: TerraformTask@5
+  displayName: Terraform Init 
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments/dev'
+    backendServiceArm: 'ALZ-ServiceConnection'
+    backendAzureRmResourceGroupName: 'rg-surendra'
+    backendAzureRmStorageAccountName: 'stgsurendra'
+    backendAzureRmContainerName: 'containersurendra'
+    backendAzureRmKey: 'terraform.tfstate'
+
+- task: TerraformTask@5
+  displayName: terraform Plan
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments/dev'
+    environmentServiceNameAzureRM: 'ALZ-ServiceConnection'
+
+- task: TerraformTask@5
+  displayName: Terraform Apply
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments/dev'
+    environmentServiceNameAzureRM: 'ALZ-ServiceConnection'
+
+
+
+    
