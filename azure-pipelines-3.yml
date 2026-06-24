@@ -13,7 +13,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments /dev'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments/dev'
     backendServiceArm: 'service-connection-terraform'
     backendAzureRmResourceGroupName: 'rg-surendra'
     backendAzureRmStorageAccountName: 'stgsurendra'
@@ -26,7 +26,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments /dev'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments/dev'
     environmentServiceNameAzureRM: 'service-connection-terraform'
 
 
@@ -35,6 +35,6 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'apply'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments /dev'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Infra_landing_zone/environments/dev'
     commandOptions: '-auto-approve'
     environmentServiceNameAzureRM: 'service-connection-terraform'
